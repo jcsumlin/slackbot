@@ -2,14 +2,17 @@ import os
 import time
 import re
 from slackclient import SlackClient
+import configparser
 
 #OAUTH session allows you do more than just see messages, Namely delete messages
-sc = SlackClient('xoxp-514059903238-512506925124-537255540608-ae89192f10750b67d8549247e75d8069',
-                 client_id='514059903238.539401442342',
-                 client_secret='6b90ff7948d40c89ac1ebfe2e83d53ad'
+config = configparser.ConfigParser()
+config.read('auth.ini')
+sc = SlackClient(config.get('slack', 'OAuthAccessToken'),
+                 client_id=config.get('slack', 'clientID'),
+                 client_secret=config.get('slack', 'clientSecret')
                  )
 #Real time message stream
-sc_rtm = SlackClient('xoxb-514059903238-537885473059-kNHEBlifpJUY54ek1QLJhwlF')
+sc_rtm = SlackClient(config.get('slack', 'BotUserOAuthAccessToken'))
 # starterbot's user ID in Slack: value is assigned after the bot starts up
 starterbot_id = None
 
